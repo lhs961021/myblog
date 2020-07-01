@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<h1>Main page</h1>
+{% include 'shared/_navbar.html' %}
+<h1>메인 페이지</h1>
+<img src="{% static 'images/주석 2020-05-26 162409.png' %}"
 {% endblock %}
