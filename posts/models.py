@@ -8,3 +8,4 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     image = models.ImageField(upload_to='images/', null=True)
+    like = models.IntegerField(default=0)

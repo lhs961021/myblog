@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %} 
+{% include 'shared/_navbar.html' %}
     <h1>상세보기 페이지</h1> 
     <h3>글 제목 : {{ post.title }} </h3><br> 
     <h3>글 내용 : {{ post.content }} </h3><br> 
     <h3>작성 시각 : {{ post.created_at }} </h3><br> 
     <h3>조회수 : {{ post.view_count }} </h3><br> 
     <h3>수정 시각 : {{ post.updated_at }} </h3><br> 
+    <h3>좋아요 : {{ post.like }} </h3><br> 
     <a href="{% url 'posts:update' post.pk %}">수정하기</a>
     <a href="{% url 'posts:delete' post.pk %}">삭제하기</a>
     {% if post.image %}
