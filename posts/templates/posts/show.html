@@ -10,8 +10,16 @@
     <h3>조회수 : {{ post.view_count }} </h3><br> 
     <h3>수정 시각 : {{ post.updated_at }} </h3><br> 
     <h3>좋아요 : {{ post.like }} </h3><br> 
-    <a href="{% url 'posts:update' post.pk %}">수정하기</a>
-    <a href="{% url 'posts:delete' post.pk %}">삭제하기</a>
+    {% if post.user %}
+        <h3>작성자 : {{ post.user }}</h3>
+    {% else %}
+        <h3>작성자 : 알수없음</h3>
+    {% endif %}
+    {% if post.user == user %}
+        <a href="{% url 'posts:update' post.pk %}">수정하기</a>
+        <a href="{% url 'posts:delete' post.pk %}">삭제하기</a>
+    {% endif %}
+
     {% if post.image %}
         <img src="{{post.image.url}}">
     {% endif %}

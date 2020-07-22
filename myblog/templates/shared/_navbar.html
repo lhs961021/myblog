@@ -12,20 +12,21 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'posts:main' %}">글 목록</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="dropdown-item"href="{% url 'account_logout' %}" class="navlink">로그아웃</a> 
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <a class="dropdownitem" href="{% url 'account_change_password' %}">비밀번호 변경</a>
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="dropdown-item"href="{% url 'account_login' %}" class="navlink">로그인</a>
+        </li>
+        <li class="nav-item">
+          <a class="dropdown-item"href="{% url 'account_signup' %}" class="navlink">회원가입</a> 
+        </li>
+        {% endif %} 
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

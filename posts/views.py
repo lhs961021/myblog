@@ -10,7 +10,8 @@ def create(request):
         title = request.POST.get('title')
         content = request.POST.get('content')
         image = request.FILES.get('image')
-        Post.objects.create(title=title, content=content, image=image)
+        user = request.user
+        Post.objects.create(title=title, content=content, image=image, user=user)
     return redirect('posts:main')
 
 def main(request):
@@ -22,7 +23,10 @@ def show(request, id):
     A = post.view_count
     A = A + 1
     post.view_count = A
-    post.save() 
+    B = post.like
+    B = B + 1 
+    post.like = B 
+    post.save()
     return render(request, 'posts/show.html', {'post': post})
 
 def update(request,id):
@@ -39,3 +43,4 @@ def delete(request,id):
     post = get_object_or_404(Post, pk=id)
     post.delete()
     return redirect("posts:main")
+
