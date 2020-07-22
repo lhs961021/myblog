@@ -43,4 +43,3 @@ def delete(request,id):
     post = get_object_or_404(Post, pk=id)
     post.delete()
     return redirect("posts:main")
-
