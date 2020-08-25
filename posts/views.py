@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post 
+from .models import *
 
 def new(request):
     return render(request, 'posts/new.html')
@@ -20,14 +20,13 @@ def main(request):
 
 def show(request, id):
     post = Post.objects.get(pk=id)
-    A = post.view_count
-    A = A + 1
-    post.view_count = A
+    post.view_count += 1
     B = post.like
     B = B + 1 
     post.like = B 
     post.save()
-    return render(request, 'posts/show.html', {'post': post})
+    all_comments = post.comments.all().order_by('-created_at')
+    return render(request, 'posts/show.html', {'post': post, 'comments': all_comments})
 
 def update(request,id):
     post = get_object_or_404(Post,pk=id)
@@ -43,3 +42,12 @@ def delete(request,id):
     post = get_object_or_404(Post, pk=id)
     post.delete()
     return redirect("posts:main")
+
+def create_comment(request, post_id):
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=post_id)
+        current_user = request.user
+        comment_content = request.POST.get('content')
+        Comment.objects.create(content=comment_content, writer=current_user, post=post)
+    return redirect('posts:show', post.pk)
+

@@ -11,7 +11,11 @@
     <h3>수정 시각 : {{ post.updated_at }} </h3><br> 
     <h3>좋아요 : {{ post.like }} </h3><br> 
     {% if post.user %}
+        {% if post.user.username == 'user' %}
+        <h3>작성자 : {{ post.user.last_name }} {{ post.user.first_name }} </h3>
+        {% else %}
         <h3>작성자 : {{ post.user }}</h3>
+        {% endif %}
     {% else %}
         <h3>작성자 : 알수없음</h3>
     {% endif %}
@@ -23,4 +27,22 @@
     {% if post.image %}
         <img src="{{post.image.url}}">
     {% endif %}
+    <div class="container mt-5">
+        <form class="form-row" action="{% url 'posts:create_comment' post.id %}" method="POST">
+            {% csrf_token %}
+            <textarea class="form-control col-11 mr-2" name="content" placeholder="댓글 내용 입력..."></textarea>
+            <input type="submit" class="btn btn-primary" value="확인">
+        </form>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        {% for comment in comments %}
+        <div class="card">
+            <div class="card-body">
+                <b>{{ comment.writer }}</b> : {{ comment.content }}<br>
+                <small>{{ comment.created_at }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}
