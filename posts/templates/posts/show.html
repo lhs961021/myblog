@@ -9,7 +9,13 @@
     <h3>작성 시각 : {{ post.created_at }} </h3><br> 
     <h3>조회수 : {{ post.view_count }} </h3><br> 
     <h3>수정 시각 : {{ post.updated_at }} </h3><br> 
-    <h3>좋아요 : {{ post.like }} </h3><br> 
+    <a href="{% url 'posts:post_like' post.id %}?redirect_to=show">
+        {% if user in post.like_user_set.all %}
+            <i class="fas fa-heart"></i>
+        {% else %}
+            <i class="far fa-heart"></i>
+        {% endif %}
+    </a>
     {% if post.user %}
         {% if post.user.username == 'user' %}
         <h3>작성자 : {{ post.user.last_name }} {{ post.user.first_name }} </h3>

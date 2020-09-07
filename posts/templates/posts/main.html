@@ -14,9 +14,15 @@
                         <div class="card-body"> <h5 class="card-title">{{ post.title }}</h5> 
                             <p class="card-text">{{ post.content }}</p> 
                             <p>{{ post.created_at }}</p>
-                            <p>조회수: {{ post.view_count }}</p> 
+                            <p>조회수: {{ post.view_count }}</p>
+                            <a href="{% url 'posts:post_like' post.id %}">
+                                {% if user in post.like_user_set.all %}
+                                    <i class="fas fa-heart"></i>
+                                {% else %}
+                                    <i class="far fa-heart"></i>
+                                {% endif %}
+                            </a>
                             <a href="{% url 'posts:show' post.pk %}" class="btn btn-primary">상세보기</a> 
-                            <a class="btn btn-primary">좋아요{{ post.like }}</a> 
                         </div> 
                     </div> 
                 </div> 
