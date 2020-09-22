@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import *
+from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
 
 def new(request):
@@ -62,6 +62,8 @@ def post_like(request, post_id):
         return redirect('posts:show', post_id)
     else:
         return redirect('posts:main')
+
+@login_required        
 def like_list(request):
-    likes = Like.objects.filter(user=request.user)
+    likes = request.user.like_set.all()
     return render(request,'posts/like_list.html',{'likes': likes})
