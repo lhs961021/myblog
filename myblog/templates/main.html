@@ -3,7 +3,87 @@
 
 {% block content %}
 {% include 'shared/_navbar.html' %}
-<h1>Have a good Day!</h1>
-<img src="{% static 'images/213FA53C5818A65628.jpg' %}">
+
+<div class="sns-container">
+    <div class="row">
+        <div class="col-8">
+            <div class="card mt-4 mb-4">
+                여기는 내가 추가한 follow한 사람들 스토리 들어감
+            </div>
+            {% for post in posts %}
+                <div class="card mb-5 sns-card">
+                    <div class="row pt-2 pr-2 pl-2 pb-2">
+                        <div class="col">
+                            <span>{{ post.user.username }}</span>
+                            <span class="float-right">
+                                {% if user == post.user %}
+                                    <a href="{% url 'posts:delete' post.pk %}" class="btn btn-primary" style="margin-left: 15px;">삭제</a>
+                                    <a href="{% url 'posts:update' post.pk %}" class="btn btn-primary">수정</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    {% if post.image %}
+                        <img class="card-img-top" src="{{ post.image.url }}" alt="Card image cap">
+                    {% endif %}
+                    <div class="row">
+                        <div class="col" style="margin-left:15px; margin-top: 5px;">
+                            <span>
+                                <a href="{% url 'posts:post_like' post.id %}" style="color: red;">
+                                    {% if user in post.like_user_set.all %}
+                                        <i class="fas fa-heart" style="font-size: 30px;"></i>
+                                    {% else %}
+                                        <i class="far fa-heart" style="font-size: 30px;"></i>
+                                    {% endif %}
+                                </a>
+                            </span>
+                            <span style="vertical-align: super;">{{ post.like_count }}명이 좋아합니다.</span>
+                            <div class="follow-btn">
+                                {% if user != post.user %}
+                                    {% if user.profile in post.user.profile.followers.all %}
+                                        <a href="{% url 'users:follow_toggle' post.user.id %}" class="btn btn-primary">팔로잉</a>
+                                    {% else %}
+                                        <a href="{% url 'users:follow_toggle' post.user.id %}" class="btn btn-outline-primary">팔로우</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="comment-section border-top">
+                        {{ post.content }}
+                            <form action="{% url 'posts:create_comment' post.id %}" method="POST" style="margin-top: 50px;" class="create-comment-form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <textarea class="form-control" name="content" placeholder="댓글 달기..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary comment-submit-button">작성</button>
+                            </form><br>
+                            {% if post.comments %}
+                                <ul class="list-group" id="comments-list-{{ post.pk }}" style="margin-top: 40px;">
+                                    {% for comment in post.comments.all %}
+                                        {% include 'comments/_comment.html' with comment=comment user=user %}
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-4">
+            <div class="card mt-4 position-fixed">
+                <div class="card-body">
+                    {% if user.is_authenticated %}
+                        <h5 class="card-title">{{ user.username }}님 환영합니다.</h5>
+                        <a href="{% url 'users:mypage' user.id %}" class="btn btn-primary">마이페이지</a>
+                    {% else %}
+                        <a href="{% url 'account_login' %}" class="btn btn-primary">로그인</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
