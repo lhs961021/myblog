@@ -18,9 +18,10 @@
                     <p>조회수: {{ post.view_count }}</p>
                     <a href="{% url 'posts:post_like' post.id %}">
                         {% if user in post.like_user_set.all %}
-                            <i class="fas fa-heart"></i>
+                            좋아요 <i class="fas fa-heart"></i>
+                            <a href="{% url 'users:follow_toggle' post.user.id %}" class="btn btn-primary">팔로잉</a>
                         {% else %}
-                            <i class="far fa-heart"></i>
+                            좋아요 <i class="far fa-heart"></i>
                         {% endif %}
                     </a>
                     <a href="{% url 'posts:show' post.pk %}" class="btn btn-primary">상세보기</a> 
