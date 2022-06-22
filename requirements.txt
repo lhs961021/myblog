@@ -48,7 +48,7 @@ matplotlib==3.4.2
 mccabe==0.6.1
 modules==1.0.0
 mysql-connector-python==8.0.25
-numpy==1.21.0
+numpy==1.22.0
 oauth2client==4.1.3
 oauthlib==3.1.0
 pandas==1.2.5
